@@ -9,8 +9,6 @@ from bot.keyboards.inline import (
     get_moisture_keyboard,
     get_photo_list_keyboard,
     get_plants_list_keyboard,
-    get_settings_keyboard,
-    get_time_selection_keyboard,
     get_watering_keyboard,
 )
 from bot.keyboards.reply import get_main_reply_keyboard
@@ -25,7 +23,5 @@ __all__ = [
     "get_moisture_keyboard",
     "get_photo_list_keyboard",
     "get_plants_list_keyboard",
-    "get_settings_keyboard",
-    "get_time_selection_keyboard",
     "get_watering_keyboard",
 ]
