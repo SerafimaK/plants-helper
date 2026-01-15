@@ -16,6 +16,7 @@ from bot.handlers import (
     commands_router,
     menu_router,
     plants_router,
+    reply_buttons_router,
     settings_router,
 )
 from bot.services.plant_service import plant_service
@@ -51,11 +52,12 @@ async def on_startup(bot: Bot):
 
     # Уведомление о запуске
     try:
+        from bot.keyboards.reply import get_main_reply_keyboard
         await bot.send_message(
             settings.owner_user_id,
-            "🌱 <b>Plants Helper запущен!</b>\n\n"
-            "Используй /menu для открытия меню.",
+            "🌱 <b>Plants Helper запущен!</b>",
             parse_mode="HTML",
+            reply_markup=get_main_reply_keyboard(),
         )
     except Exception as e:
         logger.warning(f"Не удалось отправить сообщение о запуске: {e}")
@@ -84,6 +86,7 @@ async def main():
 
     # Регистрируем роутеры
     dp.include_router(commands_router)
+    dp.include_router(reply_buttons_router)
     dp.include_router(menu_router)
     dp.include_router(admin_router)
     dp.include_router(plants_router)

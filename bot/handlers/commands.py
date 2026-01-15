@@ -6,6 +6,7 @@ from aiogram.types import Message
 
 from bot.config import settings
 from bot.keyboards.inline import get_main_menu_keyboard
+from bot.keyboards.reply import get_main_reply_keyboard
 
 router = Router()
 
@@ -28,8 +29,8 @@ async def cmd_start(message: Message):
         "🌱 <b>Привет!</b>\n\n"
         "Я помогу тебе ухаживать за твоими растениями.\n"
         "Буду напоминать о поливе и проверке почвы.\n\n"
-        "Выбери действие:",
-        reply_markup=get_main_menu_keyboard(),
+        "Используй кнопки меню внизу 👇",
+        reply_markup=get_main_reply_keyboard(),
         parse_mode="HTML",
     )
 
@@ -39,8 +40,9 @@ async def cmd_start(message: Message):
 async def cmd_menu(message: Message):
     """Обработчик команды /menu."""
     await message.answer(
-        "📋 <b>Главное меню</b>",
-        reply_markup=get_main_menu_keyboard(),
+        "📋 <b>Меню</b>\n\n"
+        "Используй кнопки внизу 👇",
+        reply_markup=get_main_reply_keyboard(),
         parse_mode="HTML",
     )
 
