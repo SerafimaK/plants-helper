@@ -1,0 +1,54 @@
+{
+  "plants": [
+    {
+      "id": "monstera",
+      "name": "Монстера",
+      "photo": "images/monstera.jpg",
+      "check_interval_days": 5,
+      "wet_interval_days": 4,
+      "moist_interval_days": 2,
+      "preference": "underwater",
+      "notes": "Любит опрыскивание листьев"
+    },
+    {
+      "id": "ficus",
+      "name": "Фикус Бенджамина",
+      "photo": "images/ficus.jpg",
+      "check_interval_days": 5,
+      "wet_interval_days": 4,
+      "moist_interval_days": 2,
+      "preference": "overwater",
+      "notes": "Не любит перестановки"
+    },
+    {
+      "id": "spathiphyllum",
+      "name": "Спатифиллум",
+      "photo": "images/spathiphyllum.jpg",
+      "check_interval_days": 4,
+      "wet_interval_days": 3,
+      "moist_interval_days": 2,
+      "preference": "overwater",
+      "notes": "Женское счастье. Любит влажность"
+    },
+    {
+      "id": "sansevieria",
+      "name": "Сансевиерия",
+      "photo": "images/sansevieria.jpg",
+      "check_interval_days": 10,
+      "wet_interval_days": 7,
+      "moist_interval_days": 4,
+      "preference": "underwater",
+      "notes": "Тёщин язык. Очень неприхотлива"
+    },
+    {
+      "id": "pothos",
+      "name": "Потос",
+      "photo": "images/pothos.jpg",
+      "check_interval_days": 5,
+      "wet_interval_days": 4,
+      "moist_interval_days": 2,
+      "preference": "underwater",
+      "notes": "Эпипремнум. Можно в воде"
+    }
+  ]
+}
