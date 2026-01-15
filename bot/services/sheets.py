@@ -1,5 +1,7 @@
 """Сервис синхронизации с Google Sheets."""
 
+import base64
+import json
 import logging
 from datetime import date, datetime, timedelta
 from typing import Optional
@@ -39,9 +41,23 @@ class GoogleSheetsService:
                 "https://www.googleapis.com/auth/drive",
             ]
 
-            credentials = Credentials.from_service_account_file(
-                settings.google_sheets_credentials_file, scopes=scopes
-            )
+            # Получаем credentials из base64 или из файла
+            if settings.google_sheets_credentials_base64:
+                # Декодируем base64 в JSON
+                credentials_json = base64.b64decode(
+                    settings.google_sheets_credentials_base64
+                ).decode("utf-8")
+                credentials_info = json.loads(credentials_json)
+                credentials = Credentials.from_service_account_info(
+                    credentials_info, scopes=scopes
+                )
+                logger.info("Используем credentials из base64")
+            else:
+                # Используем файл
+                credentials = Credentials.from_service_account_file(
+                    settings.google_sheets_credentials_file, scopes=scopes
+                )
+                logger.info("Используем credentials из файла")
 
             self._client = gspread.authorize(credentials)
             self._spreadsheet = self._client.open_by_key(

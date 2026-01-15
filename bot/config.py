@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     # Google Sheets
     google_sheets_enabled: bool = False
     google_sheets_credentials_file: str = "credentials.json"
+    google_sheets_credentials_base64: str = ""  # Альтернатива файлу — base64 encoded JSON
     google_sheets_spreadsheet_id: str = ""
 
     # Timing
