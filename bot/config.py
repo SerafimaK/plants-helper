@@ -1,8 +1,8 @@
 """Конфигурация бота."""
 
+from functools import cached_property
 from pathlib import Path
 
-from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Вычисляем базовую директорию один раз
@@ -18,24 +18,21 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # Telegram - пользователи
-    admin_user_ids: list[int]  # Список ID админов (через запятую в .env)
-    admin_names: str  # Имена админов через запятую (в том же порядке)
-    active_waterer_id: int  # ID активного поливальщика (получает уведомления)
+    # Telegram - пользователи (строки, парсятся в property)
+    admin_user_ids: str  # ID админов через запятую: "123,456,789"
+    admin_names: str  # Имена через запятую: "Сима,Петя,Вася"
+    active_waterer_id: int  # ID активного поливальщика
 
-    @field_validator("admin_user_ids", mode="before")
-    @classmethod
-    def parse_admin_ids(cls, v):
-        """Парсит строку ID через запятую в список."""
-        if isinstance(v, str):
-            return [int(x.strip()) for x in v.split(",") if x.strip()]
-        return v
+    @cached_property
+    def admin_ids_list(self) -> list[int]:
+        """Список ID админов."""
+        return [int(x.strip()) for x in self.admin_user_ids.split(",") if x.strip()]
 
-    @property
+    @cached_property
     def admin_names_map(self) -> dict[int, str]:
         """Словарь user_id -> имя."""
         names = [n.strip() for n in self.admin_names.split(",")]
-        return dict(zip(self.admin_user_ids, names))
+        return dict(zip(self.admin_ids_list, names))
 
     def get_admin_name(self, user_id: int) -> str:
         """Получить имя админа по ID."""
@@ -43,7 +40,7 @@ class Settings(BaseSettings):
 
     def is_admin(self, user_id: int) -> bool:
         """Проверить, является ли пользователь админом."""
-        return user_id in self.admin_user_ids
+        return user_id in self.admin_ids_list
 
     # Google Sheets
     google_sheets_enabled: bool = False
