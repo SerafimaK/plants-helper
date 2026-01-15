@@ -3,7 +3,7 @@
 from aiogram import F, Router
 from aiogram.types import CallbackQuery, FSInputFile
 
-from bot.keyboards.inline import get_plant_info_keyboard, get_plants_list_keyboard
+from bot.keyboards.inline import get_close_keyboard, get_plant_info_keyboard, get_plants_list_keyboard
 from bot.services.plant_service import plant_service
 
 router = Router()
@@ -66,12 +66,13 @@ async def show_photo(callback: CallbackQuery):
         )
         return
 
-    # Отправляем фото отдельным сообщением (не редактируем текущее)
+    # Отправляем фото отдельным сообщением
     photo = FSInputFile(photo_path)
     await callback.message.answer_photo(
         photo,
         caption=f"🌱 <b>{plant.name}</b>",
         parse_mode="HTML",
+        reply_markup=get_close_keyboard(),
     )
     await callback.answer()
 

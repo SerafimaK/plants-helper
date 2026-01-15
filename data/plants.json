@@ -3,7 +3,7 @@
     {
       "id": "monstera",
       "name": "Монстера",
-      "photo": "images/monstera.jpg",
+      "photo": "images/jungles.jpg",
       "check_interval_days": 5,
       "wet_interval_days": 4,
       "moist_interval_days": 2,
@@ -13,7 +13,7 @@
     {
       "id": "ficus",
       "name": "Фикус Бенджамина",
-      "photo": "images/ficus.jpg",
+      "photo": "images/jungles.jpg",
       "check_interval_days": 5,
       "wet_interval_days": 4,
       "moist_interval_days": 2,
@@ -23,7 +23,7 @@
     {
       "id": "spathiphyllum",
       "name": "Спатифиллум",
-      "photo": "images/spathiphyllum.jpg",
+      "photo": "images/jungles.jpg",
       "check_interval_days": 4,
       "wet_interval_days": 3,
       "moist_interval_days": 2,
@@ -33,7 +33,7 @@
     {
       "id": "sansevieria",
       "name": "Сансевиерия",
-      "photo": "images/sansevieria.jpg",
+      "photo": "images/jungles.jpg",
       "check_interval_days": 10,
       "wet_interval_days": 7,
       "moist_interval_days": 4,
@@ -43,7 +43,7 @@
     {
       "id": "pothos",
       "name": "Потос",
-      "photo": "images/pothos.jpg",
+      "photo": "images/jungles.jpg",
       "check_interval_days": 5,
       "wet_interval_days": 4,
       "moist_interval_days": 2,

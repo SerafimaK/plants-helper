@@ -97,6 +97,24 @@ def get_plants_list_keyboard(plants: list) -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
+def get_photo_list_keyboard(plants: list) -> InlineKeyboardMarkup:
+    """Клавиатура для выбора растения (показ фото)."""
+    builder = InlineKeyboardBuilder()
+
+    for plant in plants:
+        builder.row(
+            InlineKeyboardButton(
+                text=f"🌱 {plant.name}", callback_data=f"show_photo:{plant.id}"
+            )
+        )
+
+    builder.row(
+        InlineKeyboardButton(text="✖️ Закрыть", callback_data="close_message")
+    )
+
+    return builder.as_markup()
+
+
 def get_plant_info_keyboard(plant_id: str) -> InlineKeyboardMarkup:
     """Клавиатура для информации о растении."""
     builder = InlineKeyboardBuilder()
@@ -162,6 +180,15 @@ def get_back_to_menu_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(text="◀️ В меню", callback_data="menu:main")
+    )
+    return builder.as_markup()
+
+
+def get_close_keyboard() -> InlineKeyboardMarkup:
+    """Кнопка закрытия сообщения."""
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="✖️ Закрыть", callback_data="close_message")
     )
     return builder.as_markup()
 

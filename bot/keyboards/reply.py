@@ -9,7 +9,7 @@ def get_main_reply_keyboard() -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
 
     builder.row(
-        KeyboardButton(text="🌱 Мои растения"),
+        KeyboardButton(text="🖼 Как выглядит..."),
         KeyboardButton(text="🔧 Управление"),
     )
     builder.row(

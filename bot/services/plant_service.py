@@ -53,6 +53,12 @@ class PlantService:
 
         self._loaded = True
 
+    def reload_plants(self):
+        """Перезагрузить растения из файла."""
+        self._loaded = False
+        self._plants = {}
+        self._load_plants()
+
     def get_all_plants(self) -> list[Plant]:
         """Получить все растения."""
         self._load_plants()

@@ -6,8 +6,7 @@ from aiogram.types import Message
 from bot.config import settings
 from bot.keyboards.inline import (
     get_admin_plants_list_keyboard,
-    get_main_menu_keyboard,
-    get_plants_list_keyboard,
+    get_photo_list_keyboard,
     get_settings_keyboard,
 )
 from bot.keyboards.reply import get_main_reply_keyboard
@@ -26,24 +25,23 @@ def owner_only(handler):
     return wrapper
 
 
-@router.message(F.text == "🌱 Мои растения")
+@router.message(F.text == "🖼 Как выглядит...")
 @owner_only
-async def btn_plants(message: Message):
-    """Обработчик кнопки 'Мои растения'."""
+async def btn_show_photo(message: Message):
+    """Обработчик кнопки 'Как выглядит...'."""
     plants = plant_service.get_all_plants()
 
     if not plants:
         await message.answer(
-            "🌱 <b>Мои растения</b>\n\n"
+            "🖼 <b>Как выглядит...</b>\n\n"
             "Пока нет ни одного растения.\n"
             "Добавь их в файл <code>data/plants.json</code>",
-            reply_markup=get_main_reply_keyboard(),
         )
     else:
         await message.answer(
-            f"🌱 <b>Мои растения</b> ({len(plants)})\n\n"
-            "Выбери растение для просмотра:",
-            reply_markup=get_plants_list_keyboard(plants),
+            "🖼 <b>Как выглядит...</b>\n\n"
+            "Выбери растение:",
+            reply_markup=get_photo_list_keyboard(plants),
         )
 
 

@@ -162,6 +162,13 @@ async def handle_correct_answer(callback: CallbackQuery):
     await callback.answer("Выбери новый ответ")
 
 
+@router.callback_query(F.data == "close_message")
+async def handle_close_message(callback: CallbackQuery):
+    """Закрыть сообщение."""
+    await callback.message.delete()
+    await callback.answer()
+
+
 def _format_moisture(moisture: str) -> str:
     """Форматировать влажность для отображения."""
     mapping = {
