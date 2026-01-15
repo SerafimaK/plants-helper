@@ -4,6 +4,9 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Вычисляем базовую директорию один раз
+_BASE_DIR = Path(__file__).parent.parent.resolve()
+
 
 class Settings(BaseSettings):
     """Настройки приложения."""
@@ -32,10 +35,10 @@ class Settings(BaseSettings):
     timezone: str = "Europe/Moscow"
 
     # Paths
-    base_dir: Path = Path(__file__).parent.parent
-    data_dir: Path = base_dir / "data"
-    images_dir: Path = base_dir / "images"
-    db_path: Path = base_dir / "data" / "plants.db"
+    base_dir: Path = _BASE_DIR
+    data_dir: Path = _BASE_DIR / "data"
+    images_dir: Path = _BASE_DIR / "images"
+    db_path: Path = _BASE_DIR / "data" / "plants.db"
 
 
 settings = Settings()

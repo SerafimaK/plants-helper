@@ -1,6 +1,7 @@
 """Сервис для работы с растениями."""
 
 import json
+import logging
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
@@ -16,6 +17,8 @@ from bot.database.models import (
 )
 from bot.database.repository import db
 
+logger = logging.getLogger(__name__)
+
 
 class PlantService:
     """Сервис для работы с растениями."""
@@ -30,7 +33,10 @@ class PlantService:
             return
 
         plants_file = settings.data_dir / "plants.json"
+        logger.info(f"Загрузка растений из: {plants_file}")
+        
         if not plants_file.exists():
+            logger.warning(f"Файл не найден: {plants_file}")
             self._plants = {}
             self._loaded = True
             return
@@ -51,6 +57,7 @@ class PlantService:
             )
             self._plants[plant.id] = plant
 
+        logger.info(f"Загружено {len(self._plants)} растений")
         self._loaded = True
 
     def reload_plants(self):

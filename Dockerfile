@@ -15,8 +15,16 @@ RUN poetry config virtualenvs.create false \
 # Копируем код
 COPY . .
 
-# Создаём директории для данных
-RUN mkdir -p data images
+# Сохраняем дефолтные данные (будут копироваться в volume при старте)
+RUN mkdir -p /app/data.default /app/images.default \
+    && cp -r /app/data/* /app/data.default/ 2>/dev/null || true \
+    && cp -r /app/images/* /app/images.default/ 2>/dev/null || true
 
-# Запуск
-CMD ["python", "-m", "bot.main"]
+# Создаём директории для volume
+RUN mkdir -p /app/data /app/images
+
+# Делаем entrypoint исполняемым
+RUN chmod +x /app/entrypoint.sh
+
+# Запуск через entrypoint
+CMD ["/app/entrypoint.sh"]
