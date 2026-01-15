@@ -11,10 +11,10 @@ from bot.keyboards.reply import get_main_reply_keyboard
 router = Router()
 
 
-def owner_only(handler):
-    """Декоратор для проверки, что сообщение от владельца."""
+def admin_only(handler):
+    """Декоратор для проверки, что сообщение от одного из админов."""
     async def wrapper(message: Message, **kwargs):
-        if message.from_user.id != settings.owner_user_id:
+        if not settings.is_admin(message.from_user.id):
             await message.answer("⛔ У вас нет доступа к этому боту.")
             return
         return await handler(message)
@@ -22,11 +22,15 @@ def owner_only(handler):
 
 
 @router.message(CommandStart())
-@owner_only
+@admin_only
 async def cmd_start(message: Message):
     """Обработчик команды /start."""
+    user_name = settings.get_admin_name(message.from_user.id)
+    is_waterer = message.from_user.id == settings.active_waterer_id
+    waterer_info = " 🚿 Ты сейчас активный поливальщик!" if is_waterer else ""
+    
     await message.answer(
-        "🌱 <b>Привет!</b>\n\n"
+        f"🌱 <b>Привет, {user_name}!</b>{waterer_info}\n\n"
         "Я помогу тебе ухаживать за твоими растениями.\n"
         "Буду напоминать о поливе и проверке почвы.\n\n"
         "Используй кнопки меню внизу 👇",
@@ -36,7 +40,7 @@ async def cmd_start(message: Message):
 
 
 @router.message(Command("menu"))
-@owner_only
+@admin_only
 async def cmd_menu(message: Message):
     """Обработчик команды /menu."""
     await message.answer(
@@ -47,25 +51,3 @@ async def cmd_menu(message: Message):
     )
 
 
-@router.message(Command("help"))
-@owner_only
-async def cmd_help(message: Message):
-    """Обработчик команды /help."""
-    await message.answer(
-        "🌱 <b>Plants Helper</b> — бот для ухода за растениями\n\n"
-        "<b>Как это работает:</b>\n"
-        "• Каждый день в установленное время я присылаю уведомления\n"
-        "• Для каждого растения спрашиваю о влажности почвы\n"
-        "• На основе твоих ответов планирую следующую проверку\n"
-        "• Если почва сухая — напомню полить\n\n"
-        "<b>Команды:</b>\n"
-        "/start — начало работы\n"
-        "/menu — главное меню\n"
-        "/help — эта справка\n\n"
-        "<b>Условные обозначения:</b>\n"
-        "💧💧 — очень влажная почва\n"
-        "💧 — слегка влажная\n"
-        "🏜 — сухая почва\n"
-        "‼️ — срочный полив (игнор > 2 дней)",
-        parse_mode="HTML",
-    )

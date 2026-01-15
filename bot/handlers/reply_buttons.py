@@ -7,7 +7,7 @@ from bot.config import settings
 from bot.keyboards.inline import (
     get_admin_plants_list_keyboard,
     get_photo_list_keyboard,
-    get_settings_keyboard,
+    get_plants_list_keyboard,
 )
 from bot.keyboards.reply import get_main_reply_keyboard
 from bot.services.plant_service import plant_service
@@ -15,10 +15,10 @@ from bot.services.plant_service import plant_service
 router = Router()
 
 
-def owner_only(handler):
-    """Декоратор для проверки, что сообщение от владельца."""
+def admin_only(handler):
+    """Декоратор для проверки, что сообщение от одного из админов."""
     async def wrapper(message: Message, **kwargs):
-        if message.from_user.id != settings.owner_user_id:
+        if not settings.is_admin(message.from_user.id):
             await message.answer("⛔ У вас нет доступа к этому боту.")
             return
         return await handler(message)
@@ -26,7 +26,7 @@ def owner_only(handler):
 
 
 @router.message(F.text == "🖼 Как выглядит...")
-@owner_only
+@admin_only
 async def btn_show_photo(message: Message):
     """Обработчик кнопки 'Как выглядит...'."""
     plants = plant_service.get_all_plants()
@@ -46,7 +46,7 @@ async def btn_show_photo(message: Message):
 
 
 @router.message(F.text == "🔧 Управление")
-@owner_only
+@admin_only
 async def btn_admin(message: Message):
     """Обработчик кнопки 'Управление'."""
     plants = plant_service.get_all_plants()
@@ -66,34 +66,21 @@ async def btn_admin(message: Message):
         )
 
 
-@router.message(F.text == "⚙️ Настройки")
-@owner_only
-async def btn_settings(message: Message):
-    """Обработчик кнопки 'Настройки'."""
-    await message.answer(
-        "⚙️ <b>Настройки</b>",
-        reply_markup=get_settings_keyboard(),
-    )
+@router.message(F.text == "🌱 Мои растения")
+@admin_only
+async def btn_plants(message: Message):
+    """Обработчик кнопки 'Мои растения'."""
+    plants = plant_service.get_all_plants()
 
-
-@router.message(F.text == "❓ Помощь")
-@owner_only
-async def btn_help(message: Message):
-    """Обработчик кнопки 'Помощь'."""
-    await message.answer(
-        "🌱 <b>Plants Helper</b> — бот для ухода за растениями\n\n"
-        "<b>Как это работает:</b>\n"
-        "• Каждый день в установленное время я присылаю уведомления\n"
-        "• Для каждого растения спрашиваю о влажности почвы\n"
-        "• На основе твоих ответов планирую следующую проверку\n"
-        "• Если почва сухая — напомню полить\n\n"
-        "<b>Кнопки меню:</b>\n"
-        "🌱 Мои растения — список и информация\n"
-        "🔧 Управление — ручное обновление статуса\n"
-        "⚙️ Настройки — время уведомлений\n\n"
-        "<b>Условные обозначения:</b>\n"
-        "💧💧 — очень влажная почва\n"
-        "💧 — слегка влажная\n"
-        "🏜 — сухая почва\n"
-        "‼️ — срочный полив (игнор > 2 дней)",
-    )
+    if not plants:
+        await message.answer(
+            "🌱 <b>Мои растения</b>\n\n"
+            "Пока нет ни одного растения.\n"
+            "Добавь их в файл <code>data/plants.json</code>",
+        )
+    else:
+        await message.answer(
+            f"🌱 <b>Мои растения</b> ({len(plants)})\n\n"
+            "Выбери растение для просмотра:",
+            reply_markup=get_plants_list_keyboard(plants),
+        )

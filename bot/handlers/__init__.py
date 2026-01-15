@@ -6,7 +6,6 @@ from bot.handlers.commands import router as commands_router
 from bot.handlers.menu import router as menu_router
 from bot.handlers.plants import router as plants_router
 from bot.handlers.reply_buttons import router as reply_buttons_router
-from bot.handlers.settings import router as settings_router
 
 __all__ = [
     "admin_router",
@@ -15,5 +14,4 @@ __all__ = [
     "menu_router",
     "plants_router",
     "reply_buttons_router",
-    "settings_router",
 ]

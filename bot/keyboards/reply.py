@@ -13,8 +13,7 @@ def get_main_reply_keyboard() -> ReplyKeyboardMarkup:
         KeyboardButton(text="🔧 Управление"),
     )
     builder.row(
-        KeyboardButton(text="⚙️ Настройки"),
-        KeyboardButton(text="❓ Помощь"),
+        KeyboardButton(text="🌱 Мои растения"),
     )
 
     return builder.as_markup(resize_keyboard=True, is_persistent=True)

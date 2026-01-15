@@ -14,9 +14,6 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     builder.row(
         InlineKeyboardButton(text="🌱 Мои растения", callback_data="menu:plants")
     )
-    builder.row(
-        InlineKeyboardButton(text="⚙️ Настройки", callback_data="menu:settings")
-    )
 
     return builder.as_markup()
 
@@ -126,50 +123,6 @@ def get_plant_info_keyboard(plant_id: str) -> InlineKeyboardMarkup:
     )
     builder.row(
         InlineKeyboardButton(text="◀️ К списку", callback_data="menu:plants")
-    )
-
-    return builder.as_markup()
-
-
-def get_settings_keyboard() -> InlineKeyboardMarkup:
-    """Клавиатура настроек."""
-    builder = InlineKeyboardBuilder()
-
-    builder.row(
-        InlineKeyboardButton(
-            text="🕐 Время уведомлений", callback_data="settings:notification_time"
-        )
-    )
-    builder.row(
-        InlineKeyboardButton(text="◀️ Назад", callback_data="menu:main")
-    )
-
-    return builder.as_markup()
-
-
-def get_time_selection_keyboard() -> InlineKeyboardMarkup:
-    """Клавиатура выбора времени."""
-    builder = InlineKeyboardBuilder()
-
-    times = [
-        ("🌅 08:00", "08:00"),
-        ("🌄 09:00", "09:00"),
-        ("☀️ 10:00", "10:00"),
-        ("🌇 18:00", "18:00"),
-        ("🌆 19:00", "19:00"),
-        ("🌃 20:00", "20:00"),
-        ("🌙 21:00", "21:00"),
-    ]
-
-    for label, time_value in times:
-        builder.row(
-            InlineKeyboardButton(
-                text=label, callback_data=f"set_time:{time_value}"
-            )
-        )
-
-    builder.row(
-        InlineKeyboardButton(text="◀️ Назад", callback_data="menu:settings")
     )
 
     return builder.as_markup()

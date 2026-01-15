@@ -17,7 +17,6 @@ from bot.handlers import (
     menu_router,
     plants_router,
     reply_buttons_router,
-    settings_router,
 )
 from bot.services.plant_service import plant_service
 from bot.services.scheduler import notification_scheduler
@@ -50,17 +49,17 @@ async def on_startup(bot: Bot):
     notification_scheduler.set_bot(bot)
     await notification_scheduler.start()
 
-    # Уведомление о запуске
-    try:
-        from bot.keyboards.reply import get_main_reply_keyboard
-        await bot.send_message(
-            settings.owner_user_id,
-            "🌱 <b>Plants Helper запущен!</b>",
-            parse_mode="HTML",
-            reply_markup=get_main_reply_keyboard(),
-        )
-    except Exception as e:
-        logger.warning(f"Не удалось отправить сообщение о запуске: {e}")
+    # # Уведомление о запуске
+    # try:
+    #     from bot.keyboards.reply import get_main_reply_keyboard
+    #     await bot.send_message(
+    #         settings.owner_user_id,
+    #         "🌱 <b>Plants Helper запущен!</b>",
+    #         parse_mode="HTML",
+    #         reply_markup=get_main_reply_keyboard(),
+    #     )
+    # except Exception as e:
+    #     logger.warning(f"Не удалось отправить сообщение о запуске: {e}")
 
     logger.info("Бот запущен!")
 
@@ -90,7 +89,6 @@ async def main():
     dp.include_router(menu_router)
     dp.include_router(admin_router)
     dp.include_router(plants_router)
-    dp.include_router(settings_router)
     dp.include_router(callbacks_router)
 
     # Регистрируем хуки

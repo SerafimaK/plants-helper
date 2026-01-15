@@ -1,7 +1,7 @@
 """Планировщик уведомлений."""
 
 import logging
-from datetime import datetime, time
+from datetime import datetime
 from typing import TYPE_CHECKING
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -49,19 +49,11 @@ class NotificationScheduler:
 
     async def start(self):
         """Запустить планировщик."""
-        # Загружаем настройки пользователя
-        user_settings = await db.get_user_settings(settings.owner_user_id)
-        notification_time = (
-            user_settings.notification_time
-            if user_settings
-            else settings.default_notification_time
-        )
-
-        # Парсим время
-        hour, minute = _parse_time(notification_time)
+        # Парсим фиксированное время из конфига
+        hour, minute = _parse_time(settings.notification_time)
         reminder_hour, reminder_minute = _parse_time(settings.reminder_time)
 
-        # Ежедневные уведомления
+        # Ежедневные уведомления в 10:00
         self.scheduler.add_job(
             self._send_daily_notifications,
             CronTrigger(hour=hour, minute=minute),
@@ -69,7 +61,7 @@ class NotificationScheduler:
             replace_existing=True,
         )
 
-        # Напоминания в 18:00
+        # Напоминания о неотвеченных в 18:00
         self.scheduler.add_job(
             self._send_reminders,
             CronTrigger(hour=reminder_hour, minute=reminder_minute),
@@ -87,19 +79,9 @@ class NotificationScheduler:
 
         self.scheduler.start()
         logger.info(
-            f"Планировщик запущен. Уведомления в {notification_time}, "
+            f"Планировщик запущен. Уведомления в {settings.notification_time}, "
             f"напоминания в {settings.reminder_time}"
         )
-
-    async def update_notification_time(self, new_time: str):
-        """Обновить время уведомлений."""
-        hour, minute = _parse_time(new_time)
-
-        self.scheduler.reschedule_job(
-            self._notification_job_id,
-            trigger=CronTrigger(hour=hour, minute=minute),
-        )
-        logger.info(f"Время уведомлений изменено на {new_time}")
 
     def stop(self):
         """Остановить планировщик."""
@@ -118,12 +100,12 @@ class NotificationScheduler:
         # Импортируем здесь, чтобы избежать циклического импорта
         from bot.keyboards.inline import get_moisture_keyboard, get_watering_keyboard
 
-        # Отправляем уведомления о проверке
+        # Отправляем уведомления о проверке активному поливальщику
         for plant, status in to_check:
             try:
                 keyboard = get_moisture_keyboard(plant.id)
                 message = await self.bot.send_message(
-                    settings.owner_user_id,
+                    settings.active_waterer_id,
                     f"🌱 <b>{plant.name}</b>\n\nКак сегодня почва?",
                     reply_markup=keyboard,
                     parse_mode="HTML",
@@ -161,7 +143,7 @@ class NotificationScheduler:
                     text += f"\n\n⚠️ Без полива уже {status.overdue_days} дней"
 
                 message = await self.bot.send_message(
-                    settings.owner_user_id,
+                    settings.active_waterer_id,
                     text,
                     reply_markup=keyboard,
                     parse_mode="HTML",
@@ -207,9 +189,9 @@ class NotificationScheduler:
                 if not plant:
                     continue
 
-                # Отправляем напоминание
+                # Отправляем напоминание активному поливальщику
                 await self.bot.send_message(
-                    settings.owner_user_id,
+                    settings.active_waterer_id,
                     f"⏰ Напоминание: ты ещё не ответил про <b>{plant.name}</b>",
                     parse_mode="HTML",
                 )

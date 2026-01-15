@@ -6,7 +6,6 @@ from aiogram.types import CallbackQuery
 from bot.keyboards.inline import (
     get_main_menu_keyboard,
     get_plants_list_keyboard,
-    get_settings_keyboard,
 )
 from bot.services.plant_service import plant_service
 
@@ -45,17 +44,6 @@ async def menu_plants(callback: CallbackQuery):
             parse_mode="HTML",
         )
 
-    await callback.answer()
-
-
-@router.callback_query(F.data == "menu:settings")
-async def menu_settings(callback: CallbackQuery):
-    """Меню настроек."""
-    await callback.message.edit_text(
-        "⚙️ <b>Настройки</b>",
-        reply_markup=get_settings_keyboard(),
-        parse_mode="HTML",
-    )
     await callback.answer()
 
 
