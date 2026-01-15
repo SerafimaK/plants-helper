@@ -18,7 +18,10 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # Telegram - пользователи (строки, парсятся в property)
+    # Telegram
+    bot_token: str
+
+    # Пользователи (строки, парсятся в property)
     admin_user_ids: str  # ID админов через запятую: "123,456,789"
     admin_names: str  # Имена через запятую: "Сима,Петя,Вася"
     active_waterer_id: int  # ID активного поливальщика
