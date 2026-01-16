@@ -52,11 +52,14 @@ class NotificationScheduler:
         # Парсим фиксированное время из конфига
         hour, minute = _parse_time(settings.notification_time)
         reminder_hour, reminder_minute = _parse_time(settings.reminder_time)
+        
+        # Часовой пояс
+        tz = pytz.timezone(settings.timezone)
 
         # Ежедневные уведомления в 10:00
         self.scheduler.add_job(
             self._send_daily_notifications,
-            CronTrigger(hour=hour, minute=minute),
+            CronTrigger(hour=hour, minute=minute, timezone=tz),
             id=self._notification_job_id,
             replace_existing=True,
         )
@@ -64,7 +67,7 @@ class NotificationScheduler:
         # Напоминания о неотвеченных в 18:00
         self.scheduler.add_job(
             self._send_reminders,
-            CronTrigger(hour=reminder_hour, minute=reminder_minute),
+            CronTrigger(hour=reminder_hour, minute=reminder_minute, timezone=tz),
             id=self._reminder_job_id,
             replace_existing=True,
         )
@@ -72,7 +75,7 @@ class NotificationScheduler:
         # Перенос неотвеченных в конце дня (23:59)
         self.scheduler.add_job(
             self._reschedule_unanswered,
-            CronTrigger(hour=23, minute=59),
+            CronTrigger(hour=23, minute=59, timezone=tz),
             id=self._reschedule_job_id,
             replace_existing=True,
         )
@@ -80,7 +83,7 @@ class NotificationScheduler:
         self.scheduler.start()
         logger.info(
             f"Планировщик запущен. Уведомления в {settings.notification_time}, "
-            f"напоминания в {settings.reminder_time}"
+            f"напоминания в {settings.reminder_time} ({settings.timezone})"
         )
 
     def stop(self):
