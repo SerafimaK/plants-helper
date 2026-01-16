@@ -56,7 +56,7 @@ class NotificationScheduler:
         # Часовой пояс
         tz = pytz.timezone(settings.timezone)
 
-        # Ежедневные уведомления в 10:00
+        # Ежедневные уведомления в 11:00
         self.scheduler.add_job(
             self._send_daily_notifications,
             CronTrigger(hour=hour, minute=minute, timezone=tz),

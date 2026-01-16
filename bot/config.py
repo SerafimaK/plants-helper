@@ -52,7 +52,7 @@ class Settings(BaseSettings):
     google_sheets_spreadsheet_id: str = ""
 
     # Timing (фиксированное)
-    notification_time: str = "10:00"  # Утренние уведомления
+    notification_time: str = "11:00"  # Утренние уведомления
     reminder_time: str = "18:00"  # Напоминания о неотвеченных
 
     # Timezone
