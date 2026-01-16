@@ -87,6 +87,10 @@ class NotificationScheduler:
         """Остановить планировщик."""
         self.scheduler.shutdown()
 
+    async def run_daily_check(self):
+        """Запустить ежедневную проверку (например, при старте)."""
+        await self._send_daily_notifications()
+
     async def _send_daily_notifications(self):
         """Отправить ежедневные уведомления."""
         if not self.bot:
@@ -102,6 +106,13 @@ class NotificationScheduler:
 
         # Отправляем уведомления о проверке активному поливальщику
         for plant, status in to_check:
+            # Проверяем, не отправляли ли уже сегодня
+            existing = await db.get_today_notification_for_plant(
+                plant.id, NotificationType.CHECK
+            )
+            if existing:
+                continue
+
             try:
                 keyboard = get_moisture_keyboard(plant.id)
                 message = await self.bot.send_message(
@@ -128,6 +139,13 @@ class NotificationScheduler:
 
         # Отправляем уведомления о поливе
         for plant, status in to_water:
+            # Проверяем, не отправляли ли уже сегодня
+            existing = await db.get_today_notification_for_plant(
+                plant.id, NotificationType.WATER
+            )
+            if existing:
+                continue
+
             try:
                 # Добавляем ‼️ если игнор > 2 дней
                 urgent = status.overdue_days >= 2

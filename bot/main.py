@@ -49,6 +49,10 @@ async def on_startup(bot: Bot):
     notification_scheduler.set_bot(bot)
     await notification_scheduler.start()
 
+    # Проверяем уведомления при старте (для новых растений и пропущенных)
+    logger.info("Проверка уведомлений при старте...")
+    await notification_scheduler.run_daily_check()
+
     # # Уведомление о запуске
     # try:
     #     from bot.keyboards.reply import get_main_reply_keyboard

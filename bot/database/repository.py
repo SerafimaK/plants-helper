@@ -266,6 +266,39 @@ class Database:
                     )
         return None
 
+    async def get_today_notification_for_plant(
+        self, plant_id: str, notification_type: NotificationType = None
+    ) -> Optional[Notification]:
+        """Получить уведомление для растения за сегодня."""
+        today = date.today()
+        query = "SELECT * FROM notifications WHERE plant_id = ? AND DATE(created_at) = ?"
+        params = [plant_id, today.isoformat()]
+
+        if notification_type:
+            query += " AND notification_type = ?"
+            params.append(notification_type.value)
+
+        async with aiosqlite.connect(self.db_path) as db:
+            db.row_factory = aiosqlite.Row
+            async with db.execute(query, tuple(params)) as cursor:
+                row = await cursor.fetchone()
+                if row:
+                    return Notification(
+                        id=row["id"],
+                        plant_id=row["plant_id"],
+                        notification_type=NotificationType(row["notification_type"]),
+                        status=NotificationStatus(row["status"]),
+                        message_id=row["message_id"],
+                        created_at=datetime.fromisoformat(row["created_at"]),
+                        answered_at=(
+                            datetime.fromisoformat(row["answered_at"])
+                            if row["answered_at"]
+                            else None
+                        ),
+                        answer=row["answer"],
+                    )
+        return None
+
     # User Settings methods
     async def get_user_settings(self, user_id: int) -> Optional[UserSettings]:
         """Получить настройки пользователя."""

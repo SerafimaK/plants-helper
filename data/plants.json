@@ -1,54 +1,155 @@
 {
   "plants": [
     {
-      "id": "monstera",
-      "name": "Монстера",
-      "photo": "images/jungles.jpg",
-      "check_interval_days": 5,
-      "wet_interval_days": 4,
+      "id": "philodendron_brasil",
+      "name": "Филодендрон",
+      "photo": "images/philodendron_brasil.png",
+      "check_interval_days": 4,
+      "wet_interval_days": 3,
       "moist_interval_days": 2,
       "preference": "underwater",
-      "notes": "Любит опрыскивание листьев"
+      "notes": "Для полива можно вместо блюдца поставить заварник, дождаться пока вся вода сольется и заменить обратно на блюдце."
     },
     {
-      "id": "ficus",
-      "name": "Фикус Бенджамина",
-      "photo": "images/jungles.jpg",
-      "check_interval_days": 5,
-      "wet_interval_days": 4,
-      "moist_interval_days": 2,
-      "preference": "overwater",
-      "notes": "Не любит перестановки"
-    },
-    {
-      "id": "spathiphyllum",
-      "name": "Спатифиллум",
-      "photo": "images/jungles.jpg",
+      "id": "orchid",
+      "name": "Орхидея",
+      "photo": "images/orchid.png",
       "check_interval_days": 4,
       "wet_interval_days": 3,
       "moist_interval_days": 2,
       "preference": "overwater",
-      "notes": "Женское счастье. Любит влажность"
+      "notes": "Обязательно надо проверить, что на маленькую орхидейку тоже попадает свет"
     },
     {
-      "id": "sansevieria",
-      "name": "Сансевиерия",
-      "photo": "images/jungles.jpg",
-      "check_interval_days": 10,
-      "wet_interval_days": 7,
+      "id": "strelitzia",
+      "name": "Стрелиция",
+      "photo": "images/strelitzia.png",
+      "check_interval_days": 6,
+      "wet_interval_days": 4,
+      "moist_interval_days": 3,
+      "preference": "underwater",
+      "notes": ""
+    },
+    {
+      "id": "aglaonema",
+      "name": "Аглаонема",
+      "photo": "images/aglaonema.png",
+      "check_interval_days": 6,
+      "wet_interval_days": 4,
+      "moist_interval_days": 3,
+      "preference": "underwater",
+      "notes": ""
+    },
+    {
+      "id": "ficus_elastica_big",
+      "name": "Фикус большой",
+      "photo": "images/ficus_elastica_big.png",
+      "check_interval_days": 7,
+      "wet_interval_days": 5,
       "moist_interval_days": 4,
       "preference": "underwater",
-      "notes": "Тёщин язык. Очень неприхотлива"
+      "notes": ""
     },
     {
-      "id": "pothos",
-      "name": "Потос",
-      "photo": "images/jungles.jpg",
+      "id": "staghorn_fern",
+      "name": "Платицериум",
+      "photo": "images/staghorn_fern.png",
       "check_interval_days": 5,
       "wet_interval_days": 4,
       "moist_interval_days": 2,
       "preference": "underwater",
-      "notes": "Эпипремнум. Можно в воде"
+      "notes": "Осторожно трогать, чтобы не повредить налет. Воду наливать по стеночке, чтобы не скапливалась где не надо"
+    },
+    {
+      "id": "rhipsalis",
+      "name": "Рипсалис",
+      "photo": "images/rhipsalis.png",
+      "check_interval_days": 4,
+      "wet_interval_days": 3,
+      "moist_interval_days": 1,
+      "preference": "overwater",
+      "notes": "По рипсалису надо определять по его веточкам, если немного скукожились - пора поливать"
+    },
+    {
+      "id": "aglaonema_toms_pride",
+      "name": "Аглаонема Томс Прайд (малышка)",
+      "photo": "images/aglaonema_toms_pride.png",
+      "check_interval_days": 3,
+      "wet_interval_days": 2,
+      "moist_interval_days": 1,
+      "preference": "overwater",
+      "notes": "По ней очень видно, что она хочет пить -- крутит листья"
+    },
+    {
+      "id": "anthurium",
+      "name": "Антуриум",
+      "photo": "images/anthurium.png",
+      "check_interval_days": 4,
+      "wet_interval_days": 3,
+      "moist_interval_days": 2,
+      "preference": "underwater",
+      "notes": ""
+    },
+    {
+      "id": "philodendron_ring_of_fire",
+      "name": "Филодендрон ring of fire",
+      "photo": "images/philodendron_ring_of_fire.png",
+      "check_interval_days": 5,
+      "wet_interval_days": 4,
+      "moist_interval_days": 2,
+      "preference": "underwater",
+      "notes": ""
+    },
+    {
+      "id": "calathea",
+      "name": "Калатея",
+      "photo": "images/calathea.png",
+      "check_interval_days": 3,
+      "wet_interval_days": 3,
+      "moist_interval_days": 1,
+      "preference": "overwater",
+      "notes": ""
+    },
+    {
+      "id": "ficus_elastica_small",
+      "name": "Фикус эластика маленький",
+      "photo": "images/ficus_elastica_small.png",
+      "check_interval_days": 5,
+      "wet_interval_days": 4,
+      "moist_interval_days": 3,
+      "preference": "underwater",
+      "notes": ""
+    },
+    {
+      "id": "ficus_benjamina",
+      "name": "Фикус Бенджамина",
+      "photo": "images/ficus_benjamina.png",
+      "check_interval_days": 4,
+      "wet_interval_days": 3,
+      "moist_interval_days": 2,
+      "preference": "overwater",
+      "notes": ""
+    },
+    {
+      "id": "string_of_pearls",
+      "name": "Крестовник роули",
+      "photo": "images/string_of_pearls.png",
+      "check_interval_days": 3,
+      "wet_interval_days": 2,
+      "moist_interval_days": 2,
+      "preference": "underwater",
+      "notes": "У крустовника горошины становятся более тусклыми, когда он хочет пить"
+    },
+    {
+      "id": "epiphyllum",
+      "name": "Эпифиллум",
+      "photo": "images/epiphyllum.png",
+      "check_interval_days": 4,
+      "wet_interval_days": 3,
+      "moist_interval_days": 2,
+      "preference": "underwater",
+      "notes": ""
     }
+
   ]
 }
