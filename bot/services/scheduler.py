@@ -91,15 +91,17 @@ class NotificationScheduler:
         """Запустить ежедневную проверку (например, при старте)."""
         await self._send_daily_notifications()
 
-    async def _send_daily_notifications(self):
+    async def _send_daily_notifications(self) -> tuple[int, int]:
         """Отправить ежедневные уведомления."""
         if not self.bot:
             logger.error("Bot not set")
-            return
+            return 0, 0
 
         logger.info("Отправка ежедневных уведомлений...")
 
         to_check, to_water = await plant_service.get_plants_for_today()
+        sent_check = 0
+        sent_water = 0
 
         # Импортируем здесь, чтобы избежать циклического импорта
         from bot.keyboards.inline import get_moisture_keyboard, get_watering_keyboard
@@ -133,6 +135,7 @@ class NotificationScheduler:
                 )
                 await db.create_notification(notification)
                 await sheets_service.mark_sent(plant.name)
+                sent_check += 1
 
             except Exception as e:
                 logger.error(f"Ошибка отправки уведомления для {plant.name}: {e}")
@@ -177,18 +180,20 @@ class NotificationScheduler:
                 )
                 await db.create_notification(notification)
                 await sheets_service.mark_sent(plant.name)
+                sent_water += 1
 
             except Exception as e:
                 logger.error(f"Ошибка отправки уведомления о поливе для {plant.name}: {e}")
 
         logger.info(
-            f"Отправлено уведомлений: {len(to_check)} проверок, {len(to_water)} поливов"
+            f"Отправлено уведомлений: {sent_check} проверок, {sent_water} поливов"
         )
+        return sent_check, sent_water
 
-    async def _send_reminders(self):
+    async def _send_reminders(self) -> int:
         """Отправить напоминания о неотвеченных уведомлениях."""
         if not self.bot:
-            return
+            return 0
 
         logger.info("Проверка неотвеченных уведомлений...")
 
@@ -199,8 +204,9 @@ class NotificationScheduler:
 
         if not pending_not_reminded:
             logger.info("Все уведомления отвечены")
-            return
+            return 0
 
+        sent_count = 0
         for notification in pending_not_reminded:
             try:
                 plant = plant_service.get_plant(notification.plant_id)
@@ -218,11 +224,13 @@ class NotificationScheduler:
                 await db.update_notification(
                     notification.id, NotificationStatus.REMINDED
                 )
+                sent_count += 1
 
             except Exception as e:
                 logger.error(f"Ошибка отправки напоминания: {e}")
 
-        logger.info(f"Отправлено {len(pending_not_reminded)} напоминаний")
+        logger.info(f"Отправлено {sent_count} напоминаний")
+        return sent_count
 
     async def _reschedule_unanswered(self):
         """Перенести неотвеченные уведомления на завтра."""
