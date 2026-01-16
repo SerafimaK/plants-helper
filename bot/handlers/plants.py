@@ -68,9 +68,14 @@ async def show_photo(callback: CallbackQuery):
 
     # Отправляем фото отдельным сообщением
     photo = FSInputFile(photo_path)
+
+    caption = f"🌱 <b>{plant.name}</b>"
+    if plant.notes:
+        caption += f"\n\n📝 {plant.notes}"
+
     await callback.message.answer_photo(
         photo,
-        caption=f"🌱 <b>{plant.name}</b>",
+        caption=caption,
         parse_mode="HTML",
         reply_markup=get_close_keyboard(),
     )

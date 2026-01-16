@@ -12,7 +12,7 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
         InlineKeyboardButton(text="🔧 Управление растениями", callback_data="menu:admin")
     )
     builder.row(
-        InlineKeyboardButton(text="🌱 Мои растения", callback_data="menu:plants")
+        InlineKeyboardButton(text="🌱 Все растения", callback_data="menu:plants")
     )
 
     return builder.as_markup()

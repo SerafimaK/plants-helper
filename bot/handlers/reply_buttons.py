@@ -66,21 +66,21 @@ async def btn_admin(message: Message):
         )
 
 
-@router.message(F.text == "🌱 Мои растения")
+@router.message(F.text == "🌱 Все растения")
 @admin_only
 async def btn_plants(message: Message):
-    """Обработчик кнопки 'Мои растения'."""
+    """Обработчик кнопки 'Все растения'."""
     plants = plant_service.get_all_plants()
 
     if not plants:
         await message.answer(
-            "🌱 <b>Мои растения</b>\n\n"
+            "🌱 <b>Все растения</b>\n\n"
             "Пока нет ни одного растения.\n"
             "Добавь их в файл <code>data/plants.json</code>",
         )
     else:
         await message.answer(
-            f"🌱 <b>Мои растения</b> ({len(plants)})\n\n"
+            f"🌱 <b>Все растения</b> ({len(plants)})\n\n"
             "Выбери растение для просмотра:",
             reply_markup=get_plants_list_keyboard(plants),
         )

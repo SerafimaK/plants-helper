@@ -30,7 +30,7 @@ async def menu_plants(callback: CallbackQuery):
 
     if not plants:
         await callback.message.edit_text(
-            "🌱 <b>Мои растения</b>\n\n"
+            "🌱 <b>Все растения</b>\n\n"
             "Пока нет ни одного растения.\n"
             "Добавь их в файл <code>data/plants.json</code>",
             reply_markup=get_main_menu_keyboard(),
@@ -38,7 +38,7 @@ async def menu_plants(callback: CallbackQuery):
         )
     else:
         await callback.message.edit_text(
-            f"🌱 <b>Мои растения</b> ({len(plants)})\n\n"
+            f"🌱 <b>Вск растения</b> ({len(plants)})\n\n"
             "Выбери растение для просмотра:",
             reply_markup=get_plants_list_keyboard(plants),
             parse_mode="HTML",
